@@ -2,7 +2,7 @@ package schemer
 
 import com.raquo.laminar.api.L.*
 
-import java.util.UUID
+import scala.scalajs.js
 import scala.util.Random
 
 case class RGB(r: Int, g: Int, b: Int) {
@@ -10,13 +10,10 @@ case class RGB(r: Int, g: Int, b: Int) {
   /** brightness = sqrt( .299*R2 + .587*G2 + .114*B2 ); * from here:
     * alienryderflex.com/hsp.html
     */
-  val brightness: Double = {
-    Math.sqrt(r * r * .299 + g * g * .587 + b * b * .114)
-  }
+  val brightness: Double = Math.sqrt(r * r * .299 + g * g * .587 + b * b * .114)
 
-  def toHex: String = {
-    f"#$r%02x$g%02x$b%02x"
-  }
+  val hex: String = f"#$r%02x$g%02x$b%02x"
+
 }
 
 def getTextColour(rgb: RGB): String = {
@@ -35,22 +32,30 @@ object RGB {
 }
 
 class ColourBar() {
-  val id: String = new Random().nextInt(1000000).toString
+  val id: String = js.Dynamic.global.crypto.randomUUID().toString
+  val dataColoris: HtmlAttr[String] = dataAttr("coloris")
 
   def render(): HtmlElement = {
     val rgb = RGB.random()
-    val colour = Var(rgb.toHex)
+    val colour = Var(rgb.hex)
     val textColour = Var(getTextColour(rgb))
     div(
       cls := "colour-bar",
       backgroundColor <-- colour,
       color <-- textColour,
-      h1(child.text <-- colour),
-      onClick --> { event =>
-        val newColour = RGB.random()
-        colour.set(newColour.toHex)
-        textColour.set(getTextColour(newColour))
-      }
+      div(
+        cls := "colour-bar-content",
+        h2(child.text <-- colour),
+        button(
+          cls := "btn",
+          onClick --> { _ =>
+            colour.set(RGB.random().hex)
+            textColour.set(getTextColour(rgb))
+          },
+          "Random"
+        ),
+        input(typ := "text", dataColoris := "")
+      )
     )
   }
 }
