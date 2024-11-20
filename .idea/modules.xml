@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/livechart.iml" filepath="$PROJECT_DIR$/.idea/modules/livechart.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/livechart.livechart-build.iml" filepath="$PROJECT_DIR$/.idea/modules/livechart.livechart-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.schemer-build.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.schemer-build.iml" />
     </modules>
   </component>
 </project>
