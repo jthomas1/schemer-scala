@@ -1,6 +1,7 @@
 package schemer
 
 import com.raquo.laminar.api.L.*
+import org.scalajs.dom.html
 
 import scala.scalajs.js
 import scala.util.Random
@@ -33,7 +34,17 @@ object RGB {
 
 class ColourBar() {
   val id: String = js.Dynamic.global.crypto.randomUUID().toString
-  val dataColoris: HtmlAttr[String] = dataAttr("coloris")
+  def handleColourPick(colour: String, input: html.Input) = {
+    js.Dynamic.global.console.log(colour)
+    js.Dynamic.global.console.log(input)
+    println(colour)
+    println(input)
+  }
+
+  val colorisOptions = js
+    .Dynamic
+    .literal("el" -> ".colour-picker", "onChange" -> handleColourPick)
+  js.Dynamic.global.Coloris(colorisOptions)
 
   def render(): HtmlElement = {
     val rgb = RGB.random()
@@ -54,7 +65,7 @@ class ColourBar() {
           },
           "Random"
         ),
-        input(typ := "text", dataColoris := "")
+        input(typ := "text", cls := "colour-picker")
       )
     )
   }
