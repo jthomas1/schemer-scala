@@ -14,12 +14,55 @@ def run(): Unit = {
 }
 
 object Main {
-  private def genList(n: Int): List[ColourBar] = {
-    List.tabulate(n)(_ => ColourBar())
+  private def genList(n: Int): List[ColourBarViewModel] = {
+    List.tabulate(n)(_ => ColourBarViewModel())
+  }
+
+  private val coloursVar = Var[List[ColourBarViewModel]](
+    List(ColourBarViewModel())
+  )
+
+  private def renderColourBar(
+      colourId: String,
+      vm: ColourBarViewModel,
+      signal: Signal[ColourBarViewModel]
+  ): HtmlElement = {
+    div(
+      cls := "colour-bar",
+      backgroundColor <-- vm.bgHexVar,
+      color <-- vm.textHexVar,
+      div(
+        cls := "colour-bar-content",
+        h2(child.text <-- vm.bgHexVar),
+        button(
+          cls := "btn",
+          onClick --> { _ =>
+            vm.updateRandom()
+          },
+          "Random"
+        ),
+        div(
+          input(
+            typ := "text",
+            cls := s"coloris-picker-$colourId",
+            value <-- vm.bgHexVar,
+            onClick --> { _ =>
+              vm.openColourPicker()
+            }
+          )
+        ),
+        button(
+          cls := "btn",
+          onClick --> { _ =>
+            coloursVar.update(_.filter(_.id != vm.id))
+          },
+          "Remove"
+        )
+      )
+    )
   }
 
   def appElement(): Element = {
-    val coloursVar = Var[List[ColourBar]](List(ColourBar()))
 
     div(
       cls := "container",
@@ -28,7 +71,7 @@ object Main {
         button(
           cls := "btn",
           onClick --> { _ =>
-            coloursVar.set(coloursVar.now() :+ ColourBar())
+            coloursVar.set(coloursVar.now() :+ ColourBarViewModel())
           },
           "Add Colour"
         ),
@@ -49,8 +92,7 @@ object Main {
       ),
       div(
         cls := "colour-bar-container",
-        children <--
-          coloursVar.signal.split(_.id)((_, input, _) => input.render()),
+        children <-- coloursVar.signal.split(_.id)(renderColourBar),
         onKeyPress --> { event =>
           println(event)
           if event.keyCode == 32 then
