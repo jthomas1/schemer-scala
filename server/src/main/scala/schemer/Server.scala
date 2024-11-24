@@ -1,6 +1,6 @@
 package schemer
 
-import upickle.default.write
+import upickle.default.{read, write}
 
 object Server extends cask.MainRoutes {
   @cask.get("/")
@@ -14,9 +14,14 @@ object Server extends cask.MainRoutes {
     write(colours)
   }
 
-  @cask.post("/colour")
-  def create(request: cask.Request) = {
-    request.text()
+  @cask.postJson("/colour")
+  def echoList(request: ujson.Arr) = {
+    val rgbList = read[List[RGB]](request)
+
+    println(s"Received ${rgbList.size} colours")
+    println(rgbList)
+
+    write(rgbList)
   }
 
   initialize()
