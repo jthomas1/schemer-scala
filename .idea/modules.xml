@@ -2,6 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.iml" filepath="$PROJECT_DIR$/.idea/modules/root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.client.iml" filepath="$PROJECT_DIR$/.idea/modules/root.client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.root-build.iml" filepath="$PROJECT_DIR$/.idea/modules/root.root-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.server.iml" filepath="$PROJECT_DIR$/.idea/modules/root.server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.shared.schemer-scala-sources.iml" filepath="$PROJECT_DIR$/.idea/modules/root.shared.schemer-scala-sources.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.shared.sharedJS.iml" filepath="$PROJECT_DIR$/.idea/modules/root.shared.sharedJS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.shared.sharedJVM.iml" filepath="$PROJECT_DIR$/.idea/modules/root.shared.sharedJVM.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.schemer-build.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.schemer-build.iml" />
     </modules>

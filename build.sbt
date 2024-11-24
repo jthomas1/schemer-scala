@@ -1,11 +1,25 @@
 import org.scalajs.linker.interface.ModuleSplitStyle
 
-lazy val schemer = project
+ThisBuild / scalaVersion := "3.5.2"
+
+lazy val root = project.in(file(".")).aggregate(client, server)
+
+lazy val shared = crossProject(JSPlatform, JVMPlatform)
   .in(file("."))
+  .settings(libraryDependencies ++= Seq("com.lihaoyi" %%% "upickle" % "4.0.2"))
+
+lazy val server = project
+  .in(file("./server"))
+  .settings(
+    /* Normal scala dependencies */
+    libraryDependencies ++= Seq("com.lihaoyi" %% "cask" % "0.10.1")
+  )
+  .dependsOn(shared.jvm)
+
+lazy val client = project
+  .in(file("./client"))
   .enablePlugins(ScalaJSPlugin) // Enable the Scala.js plugin in this project
   .settings(
-    scalaVersion := "3.5.2",
-
     // Tell Scala.js that this is an application with a main method
     scalaJSUseMainModuleInitializer := true,
 
@@ -29,4 +43,9 @@ lazy val schemer = project
         "org.scala-js" %%% "scalajs-dom" % "2.8.0",
         "com.raquo" %%% "laminar" % "16.0.0"
       )
-  )
+  ).dependsOn(shared.js)
+
+// Run the frontend development loop (also run vite: `cd frontend; npm run dev`)
+addCommandAlias("cup", ";~client/fastLinkJS")
+// Start the backend server, and make sure to stop it afterwards
+addCommandAlias("sup", ";server/reStop ;~server/reStart ;server/reStop")
