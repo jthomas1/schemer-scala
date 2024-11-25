@@ -3,10 +3,10 @@ package schemer
 import com.raquo.laminar.api.L.{*, given}
 import org.scalajs.dom
 import org.scalajs.dom.{HttpMethod, RequestInit, fetch}
-import upickle.default.write
+import upickle.default.{ReadWriter, write}
+
 import scala.scalajs.js.Thenable.Implicits.*
 import scala.concurrent.ExecutionContext.Implicits.global
-
 import scala.scalajs.js
 
 @main
@@ -64,6 +64,8 @@ object Main {
     )
   }
 
+  private case class PostRequestPayload(colours: List[RGB]) derives ReadWriter
+
   private def postColours(colours: List[RGB]): js.Promise[dom.Response] = {
     val url = "http://localhost:8080/colour"
 
@@ -73,7 +75,7 @@ object Main {
       url,
       new RequestInit {
         method = HttpMethod.POST
-        body = write(coloursVar.now().map(_.rgb))
+        body = write(PostRequestPayload(coloursVar.now().map(_.rgb)))
         headers = myHeaders
       }
     )

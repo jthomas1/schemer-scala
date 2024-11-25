@@ -15,11 +15,11 @@ object Server extends cask.MainRoutes {
   }
 
   @cask.postJson("/colour")
-  def echoList(request: ujson.Arr) = {
-    val rgbList = read[List[RGB]](request)
+  def echoList(colours: ujson.Value) = {
+    val rgbList = read[List[RGB]](colours)
 
     println(s"Received ${rgbList.size} colours")
-    println(rgbList)
+    println(rgbList.map(_.hex))
 
     write(rgbList)
   }

@@ -41,8 +41,7 @@ lazy val client = project
     libraryDependencies ++=
       Seq(
         "org.scala-js" %%% "scalajs-dom" % "2.8.0",
-        "com.raquo" %%% "laminar" % "16.0.0",
-        "com.lihaoyi" %%% "requests" % "0.9.0"
+        "com.raquo" %%% "laminar" % "16.0.0"
       )
   ).dependsOn(shared.js)
 
