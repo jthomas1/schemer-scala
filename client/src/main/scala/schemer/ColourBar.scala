@@ -9,6 +9,7 @@ class ColourBar(val rgb: RGB = RGB.random()) {
   val id: String = js.Dynamic.global.crypto.randomUUID().toString
   val bgHexVar: Var[String] = Var(rgb.hex)
   val textHexVar: Var[String] = Var(RGB.getTextColour(rgb))
+  val lockVar: Var[Boolean] = Var(false)
 
   private def handleColourPick(colour: String, input: html.Input): Unit = {
     update(RGB.fromHex(colour))

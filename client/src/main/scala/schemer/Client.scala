@@ -41,6 +41,7 @@ object Main {
           onClick --> { _ =>
             vm.updateRandom()
           },
+          disabled <-- vm.lockVar,
           "Random"
         ),
         div(
@@ -50,7 +51,18 @@ object Main {
             value <-- vm.bgHexVar,
             onClick --> { _ =>
               vm.openColourPicker()
-            }
+            },
+            disabled <-- vm.lockVar
+          )
+        ),
+        div(
+          label(
+            "Lock",
+            input(
+              typ := "checkbox",
+              value <-- vm.lockVar.signal.map(_.toString),
+              onClick.mapToChecked --> vm.lockVar.writer
+            )
           )
         ),
         button(
@@ -58,6 +70,7 @@ object Main {
           onClick --> { _ =>
             coloursVar.update(_.filter(_.id != vm.id))
           },
+          disabled <-- vm.lockVar,
           "Remove"
         )
       )
@@ -104,7 +117,15 @@ object Main {
         button(
           cls := "btn",
           onClick --> { _ =>
-            coloursVar.set(genList(coloursVar.now().size))
+            val updated = coloursVar
+              .now()
+              .map(colour => {
+                if (!colour.lockVar.now()) {
+                  colour.updateRandom()
+                }
+                colour
+              })
+            coloursVar.set(updated)
           },
           "Randomise"
         ),
