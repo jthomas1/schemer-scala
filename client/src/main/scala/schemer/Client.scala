@@ -1,155 +1,47 @@
 package schemer
 
 import com.raquo.laminar.api.L.{*, given}
+import com.raquo.waypoint.*
 import org.scalajs.dom
-import org.scalajs.dom.{HttpMethod, RequestInit, fetch}
-import upickle.default.{ReadWriter, write}
+import upickle.default.{ReadWriter, read, write}
 
-import scala.scalajs.js.Thenable.Implicits.*
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.scalajs.js
+sealed trait Page derives ReadWriter
+case object ColourPickerPage extends Page
+case object MySchemesPage extends Page
 
 @main
 def run(): Unit = {
-  renderOnDomContentLoaded(
-    dom.document.getElementById("app"),
-    Main.appElement()
-  )
+  renderOnDomContentLoaded(dom.document.getElementById("app"), Main.appElement())
 }
 
 object Main {
-  private def genList(n: Int): List[ColourBar] = {
-    List.tabulate(n)(_ => ColourBar())
-  }
-
-  private val coloursVar = Var[List[ColourBar]](List(ColourBar()))
-
-  private def renderColourBar(
-      colourId: String,
-      vm: ColourBar,
-      signal: Signal[ColourBar]
-  ): HtmlElement = {
-    div(
-      cls := "colour-bar",
-      backgroundColor <-- vm.bgHexVar,
-      color <-- vm.textHexVar,
-      div(
-        cls := "colour-bar-content",
-        h2(child.text <-- vm.bgHexVar),
-        button(
-          cls := "btn",
-          onClick --> { _ =>
-            vm.updateRandom()
-          },
-          disabled <-- vm.lockVar,
-          "Random"
-        ),
-        div(
-          input(
-            typ := "text",
-            cls := s"coloris-picker-$colourId",
-            value <-- vm.bgHexVar,
-            onClick --> { _ =>
-              vm.openColourPicker()
-            },
-            disabled <-- vm.lockVar
-          )
-        ),
-        div(
-          label(
-            "Lock",
-            input(
-              typ := "checkbox",
-              value <-- vm.lockVar.signal.map(_.toString),
-              onClick.mapToChecked --> vm.lockVar.writer
-            )
-          )
-        ),
-        button(
-          cls := "btn",
-          onClick --> { _ =>
-            coloursVar.update(_.filter(_.id != vm.id))
-          },
-          disabled <-- vm.lockVar,
-          "Remove"
-        )
-      )
-    )
-  }
-
-  private case class PostRequestPayload(colours: List[RGB]) derives ReadWriter
-
-  private def postColours(colours: List[RGB]): js.Promise[dom.Response] = {
-    val url = "http://localhost:8080/colour"
-
-    val myHeaders = new dom.Headers()
-    myHeaders.set("Content-Type", "application/json")
-    fetch(
-      url,
-      new RequestInit {
-        method = HttpMethod.POST
-        body = write(PostRequestPayload(coloursVar.now().map(_.rgb)))
-        headers = myHeaders
-      }
-    )
-  }
-
   def appElement(): Element = {
+    val colourPickerRoute = Route.static(ColourPickerPage, root / "colour-picker" / endOfSegments)
 
-    div(
-      cls := "container",
-      headerTag(
-        cls := "header",
-        button(
-          cls := "btn",
-          onClick --> { _ =>
-            coloursVar.set(coloursVar.now() :+ ColourBar())
-          },
-          "Add Colour"
-        ),
-        button(
-          cls := "btn",
-          onClick --> { _ =>
-            coloursVar.set(coloursVar.now().dropRight(1))
-          },
-          "Remove Colour"
-        ),
-        button(
-          cls := "btn",
-          onClick --> { _ =>
-            val updated = coloursVar
-              .now()
-              .map(colour => {
-                if (!colour.lockVar.now()) {
-                  colour.updateRandom()
-                }
-                colour
-              })
-            coloursVar.set(updated)
-          },
-          "Randomise"
-        ),
-        button(
-          cls := "btn",
-          onClick --> { _ =>
-            for {
-              response <- postColours(coloursVar.now().map(_.rgb))
-              json <- response.json()
-              _ = js.Dynamic.global.console.log(json)
-            } yield ()
-          },
-          "Send to server"
-        )
-      ),
-      div(
-        cls := "colour-bar-container",
-        children <-- coloursVar.signal.split(_.id)(renderColourBar),
-        onKeyPress --> { event =>
-          println(event)
-          if event.keyCode == 32 then
-            coloursVar.set(genList(coloursVar.now().size))
-        }
+    val mySchemesRoute = Route.static(MySchemesPage, root / "my-schemes" / endOfSegments)
+
+    val router = {
+      new Router[Page](
+        routes = List(colourPickerRoute, mySchemesRoute),
+        getPageTitle = _.toString, // mock page title (displayed in the browser tab next to favicon)
+        serializePage = page => write(page), // serialize page data for storage in History API log
+        deserializePage = pageStr => read(pageStr) // deserialize the above
+      )(
+        popStateEvents = windowEvents(_.onPopState), // this is how Waypoint avoids an explicit dependency on Laminar
+        owner = unsafeWindowOwner // this router will live as long as the window
       )
-    )
+    }
+
+    val splitter = {
+      SplitRender[Page, HtmlElement](router.currentPageSignal)
+        .collectStatic(ColourPickerPage) {
+          PickerPage.render()
+        }
+        .collectStatic(MySchemesPage) {
+          SchemesPage.render()
+        }
+    }
+
+    div(h1("Hello!"), child <-- splitter.signal)
   }
 }
