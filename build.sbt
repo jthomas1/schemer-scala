@@ -31,8 +31,7 @@ lazy val client = project
      *   (in particular, for the standard library)
      */
     scalaJSLinkerConfig ~= {
-      _.withModuleKind(ModuleKind.ESModule)
-        .withModuleSplitStyle(ModuleSplitStyle.SmallModulesFor(List("schemer")))
+      _.withModuleKind(ModuleKind.ESModule).withModuleSplitStyle(ModuleSplitStyle.SmallModulesFor(List("schemer")))
     },
 
     /* Depend on the scalajs-dom library.
@@ -41,7 +40,7 @@ lazy val client = project
     libraryDependencies ++=
       Seq(
         "org.scala-js" %%% "scalajs-dom" % "2.8.0",
-        "com.raquo" %%% "laminar" % "16.0.0",
+        "com.raquo" %%% "laminar" % "17.1.0",
         "com.raquo" %%% "waypoint" % "8.0.1"
       )
   ).dependsOn(shared.js)

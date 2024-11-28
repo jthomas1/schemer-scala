@@ -10,6 +10,13 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.shared.sharedJS.iml" filepath="$PROJECT_DIR$/.idea/modules/root.shared.sharedJS.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.shared.sharedJVM.iml" filepath="$PROJECT_DIR$/.idea/modules/root.shared.sharedJVM.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.root.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.root.client.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.root.client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.root.root-build.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.root.root-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.root.server.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.root.server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.root.shared.schemer-sources.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.root.shared.schemer-sources.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.root.shared.sharedJS.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.root.shared.sharedJS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.root.shared.sharedJVM.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.root.shared.sharedJVM.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/schemer.schemer-build.iml" filepath="$PROJECT_DIR$/.idea/modules/schemer.schemer-build.iml" />
     </modules>
   </component>
