@@ -2,8 +2,8 @@ package schemer
 
 import com.raquo.laminar.api.L.*
 import org.scalajs.dom
-import org.scalajs.dom.{HttpMethod, RequestInit, fetch}
-import upickle.default.{ReadWriter, write, read}
+import org.scalajs.dom.{HttpMethod, RequestInit, RequestMode, fetch}
+import upickle.default.{ReadWriter, read, write}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
@@ -78,6 +78,7 @@ object PickerPage {
         method = HttpMethod.POST
         body = write(PostRequestPayload(coloursVar.now().map(_.rgb)))
         headers = myHeaders
+        mode = RequestMode.`no-cors`
       }
     )
   }
