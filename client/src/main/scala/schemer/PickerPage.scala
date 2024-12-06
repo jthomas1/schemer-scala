@@ -76,7 +76,7 @@ object PickerPage {
       url,
       new RequestInit {
         method = HttpMethod.POST
-        body = write(PostRequestPayload(coloursVar.now().map(_.rgb)))
+        body = write(PostRequestPayload(colours))
         headers = myHeaders
         mode = RequestMode.`no-cors`
       }
@@ -129,15 +129,7 @@ object PickerPage {
           "Send to server"
         )
       ),
-      div(
-        cls := "colour-bar-container",
-        children <-- coloursVar.signal.split(_.id)(renderColourBar),
-        onKeyPress --> { event =>
-          println(event)
-          if event.keyCode == 32 then
-            coloursVar.set(genList(coloursVar.now().size))
-        }
-      )
+      div(cls := "colour-bar-container", children <-- coloursVar.signal.split(_.id)(renderColourBar))
     )
   }
 }

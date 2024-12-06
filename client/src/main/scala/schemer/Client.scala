@@ -74,10 +74,12 @@ object Main {
   def appElement(): Element = {
     div(
       h1("Hello!"),
-      div(
-        a(navigateTo(Home), "Home"),
-        a(navigateTo(ColourPickerPage), "Picker"),
-        a(navigateTo(MySchemesPage), "My Schemes")
+      navTag(
+        ul(
+          li(a(navigateTo(Home), "Home")),
+          li(a(navigateTo(ColourPickerPage), "Picker")),
+          li(a(navigateTo(MySchemesPage), "My Schemes"))
+        )
       ),
       child <-- splitter.signal
     )
