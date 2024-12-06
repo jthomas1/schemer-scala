@@ -1,0 +1,3 @@
+package schemer
+
+object HomePage {}

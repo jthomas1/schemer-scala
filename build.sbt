@@ -19,9 +19,13 @@ lazy val server = project
 lazy val client = project
   .in(file("./client"))
   .enablePlugins(ScalaJSPlugin) // Enable the Scala.js plugin in this project
+  .enablePlugins(ScalablyTypedConverterExternalNpmPlugin) // Enable ScalablyTyped
   .settings(
     // Tell Scala.js that this is an application with a main method
     scalaJSUseMainModuleInitializer := true,
+
+    // Tell ScalablyTyped that we manage `npm install` ourselves
+    externalNpm := baseDirectory.value,
 
     /* Configure Scala.js to emit modules in the optimal way to
      * connect to Vite's incremental reload.
@@ -41,7 +45,9 @@ lazy val client = project
       Seq(
         "org.scala-js" %%% "scalajs-dom" % "2.8.0",
         "com.raquo" %%% "laminar" % "17.1.0",
-        "com.raquo" %%% "waypoint" % "8.0.1"
+        "com.raquo" %%% "waypoint" % "8.0.1",
+        "me.shadaj" %%% "slinky-core" % "0.7.4", // core React functionality, no React DOM
+        "me.shadaj" %%% "slinky-web" % "0.7.4" // React DOM, HTML and SVG tags
       )
   ).dependsOn(shared.js)
 
@@ -49,3 +55,5 @@ lazy val client = project
 addCommandAlias("cup", ";~client/fastLinkJS")
 // Start the backend server, and make sure to stop it afterwards
 addCommandAlias("sup", ";server/reStop ;~server/reStart ;server/reStop")
+
+scalacOptions += "-Ymacro-annotations" // for @react

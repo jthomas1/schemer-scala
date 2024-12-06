@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="sbt 1" modules="root,root.server,root.shared.sharedJVM,schemer.root,schemer.root.server,schemer.root.shared.sharedJVM,schemer_8711" />
+    <profile name="sbt 1" modules="root,root.server,root.shared.sharedJVM,schemer.root.server,schemer.root.shared.sharedJVM,schemer_8711" />
     <profile name="sbt 2" modules="root.client,root.shared.sharedJS,schemer,schemer-scala.schemer,schemer.root.client,schemer.root.shared.sharedJS">
       <parameters>
         <parameter value="-scalajs" />
+      </parameters>
+    </profile>
+    <profile name="sbt 3" modules="schemer.root">
+      <parameters>
+        <parameter value="-Ymacro-annotations" />
       </parameters>
     </profile>
   </component>
