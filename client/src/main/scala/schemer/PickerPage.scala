@@ -85,7 +85,7 @@ object PickerPage {
 
   def render(): HtmlElement = {
     div(
-      cls := "container",
+      cls := "picker-container",
       headerTag(
         cls := "header",
         button(

@@ -15,10 +15,6 @@ class ColourBar(val rgb: RGB = RGB.random()) {
     update(RGB.fromHex(colour))
   }
 
-  private def onInput(picker: js.Object) = {
-    js.Dynamic.global.console.log(picker)
-  }
-
   def update(rgb: RGB) = {
     bgHexVar.set(rgb.hex)
     textHexVar.set(RGB.getTextColour(rgb))
@@ -29,11 +25,7 @@ class ColourBar(val rgb: RGB = RGB.random()) {
   def openColourPicker(): Unit = {
     val colorisOptions = js
       .Dynamic
-      .literal(
-        "el" -> s".coloris-picker-$id",
-        "onChange" -> handleColourPick,
-        "wrap" -> false
-      )
+      .literal("el" -> s".coloris-picker-$id", "onChange" -> handleColourPick, "wrap" -> false)
     js.Dynamic.global.Coloris(colorisOptions)
   }
 }

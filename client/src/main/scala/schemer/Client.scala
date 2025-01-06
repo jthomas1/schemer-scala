@@ -61,7 +61,7 @@ object Main {
   private val splitter = {
     SplitRender[Page, HtmlElement](router.currentPageSignal)
       .collectStatic(Home) {
-        div("Hello home!")
+        HomePage.render()
       }
       .collectStatic(ColourPickerPage) {
         PickerPage.render()
@@ -72,13 +72,16 @@ object Main {
   }
 
   def appElement(): Element = {
-    div(
-      h1("Hello!"),
-      navTag(
-        ul(
-          li(a(navigateTo(Home), "Home")),
-          li(a(navigateTo(ColourPickerPage), "Picker")),
-          li(a(navigateTo(MySchemesPage), "My Schemes"))
+    mainTag(
+      headerTag(
+        cls := "page-header",
+        h1("Schemer"),
+        navTag(
+          ul(
+            li(a(navigateTo(Home), "Home")),
+            li(a(navigateTo(ColourPickerPage), "Picker")),
+            li(a(navigateTo(MySchemesPage), "My Schemes"))
+          )
         )
       ),
       child <-- splitter.signal
